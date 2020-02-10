@@ -246,6 +246,7 @@ public final class ItemUtil {
         } else {
             switch(mat) {
                 case BOOK:
+                case ENCHANTED_BOOK:
                 case FISHING_ROD:
                 case SHEARS:
                 case CARROT_ON_A_STICK:

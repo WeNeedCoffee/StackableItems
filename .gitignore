@@ -13,3 +13,4 @@ downloads/*/dev
 .gradle
 build/
 /build/
+/target/

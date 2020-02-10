@@ -27,7 +27,7 @@ public final class InventoryUtil {
     public static void init(StackableItems si) {
         plugin = si;
     }
-/*
+
     private static int getInventoryFreeSpaces(String worldName, ItemStack itemToCheck, Inventory inventory) {
         int free = 0;
 
@@ -39,7 +39,7 @@ public final class InventoryUtil {
         while (iter.hasNext()) {
             ItemStack slot = iter.next();
 
-            int maxAmount = getInventoryMax(null, worldName, inventory, type, durability, i);
+            int maxAmount = getInventoryMax(null, worldName, null, inventory, type, durability, i);
 
             if (slot == null) {
                 free += maxAmount;
@@ -54,7 +54,7 @@ public final class InventoryUtil {
 
         return free;
     }
-*/
+
     public static int getPlayerFreeSpaces(Player player, ItemStack itemToCheck) {
         return getFreeSpaces(player, itemToCheck, player.getOpenInventory(), player.getInventory(), 0, 36);
     }
@@ -737,7 +737,7 @@ public final class InventoryUtil {
         }
     }
 
-    /*
+    
     public static void moveItemsFromHopper(final Location location, final ItemStack stack, final Inventory fromInventory, final Inventory toInventory, final int max) {
         int freeSpaces = getInventoryFreeSpaces(location.getWorld().getName(), stack, toInventory);
         if (freeSpaces > 0) {
@@ -752,7 +752,7 @@ public final class InventoryUtil {
             });
         }
     }
-    */
+    
 
     public static int moveItemsToPlayer(Player player, ItemStack clicked, InventoryClickEvent event, int start, int end, boolean setLeft, Inventory fromInventory) {
         String extraType = "";
@@ -960,8 +960,8 @@ public final class InventoryUtil {
 
             gamemode = player.getGameMode();
         }
-
-        String invName = view.getTitle();
+        String invName = "";
+        if (view != null) invName = view.getTitle();
 
 
         if (inventoryType == InventoryType.CHEST && (invName.equalsIgnoreCase("Horse") || invName.equalsIgnoreCase("Undead horse") || invName.equalsIgnoreCase("Skeleton horse"))) {

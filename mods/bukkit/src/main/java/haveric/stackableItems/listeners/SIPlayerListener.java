@@ -502,7 +502,6 @@ public class SIPlayerListener implements Listener {
             int newAmount = added.getAmount();
 
             int maxSlot = InventoryUtil.getInventoryMax(player, null, view, inventory, cursorType, cursorDur, slot);
-
             if (newAmount > maxSlot && maxSlot > SIItems.ITEM_DEFAULT) {
                 int extra = newAmount - maxSlot;
                 numToSplit += extra;
@@ -1050,7 +1049,7 @@ public class SIPlayerListener implements Listener {
                 if (rawSlot < top.getSize()) {
                     // We only want to override if moving more than a vanilla stack will hold
                     int defaultStack = InventoryUtil.getAmountDefaultCanMove(player, clicked, player.getInventory(), top, "");
-                    if (defaultStack > -1 && clickedAmount > defaultStack) {
+                    if ((defaultStack > -1 && clickedAmount > defaultStack) || ItemUtil.isShulkerBox(clicked.getType())) {
                         InventoryUtil.moveItemsToPlayer(player, clicked.clone(), event, 0, 36, true, top);
                     }
                 } else {
@@ -1171,19 +1170,19 @@ public class SIPlayerListener implements Listener {
                         // We only want to override if moving more than a vanilla stack will hold
                         int defaultStack = InventoryUtil.getAmountDefaultCanMove(player, clicked, top, null, "inventory");
 
-                        if (defaultStack > -1 && clickedAmount > defaultStack) {
+                        if (defaultStack > -1 && clickedAmount > defaultStack || ItemUtil.isShulkerBox(cursorType)) {
                             InventoryUtil.moveItemsToFullInventory(player, clicked.clone(), event, top, true, "inventory");
                         }
                     } else if (topType == InventoryType.SHULKER_BOX) {
                         // Shulker boxes can't go inside other shulker boxes
-                        if (!ItemUtil.isShulkerBox(clicked.getType())) {
+                       // if (!ItemUtil.isShulkerBox(clicked.getType())) {
                             // We only want to override if moving more than a vanilla stack will hold
                             int defaultStack = InventoryUtil.getAmountDefaultCanMove(player, clicked, top, null, "inventory");
 
-                            if (defaultStack > -1 && clickedAmount > defaultStack) {
+                            if ((defaultStack > -1 && clickedAmount > defaultStack) || ItemUtil.isShulkerBox(clicked.getType())) {
                                 InventoryUtil.moveItemsToFullInventory(player, clicked.clone(), event, top, true, "inventory");
                             }
-                        }
+                     //   }
                     // This adds shift clicking from the player inventory to the workbench.
                     } else if (topType == InventoryType.WORKBENCH) {
                         int left = InventoryUtil.moveItemsToInventory(player, clicked.clone(), event, top, 1, 10, false);
@@ -1412,7 +1411,7 @@ public class SIPlayerListener implements Listener {
 
                 // Drop a stack into an empty slot
                 } else if (!cursorEmpty && slotEmpty) {
-                    boolean isShulkerInShulker = topType == InventoryType.SHULKER_BOX && ItemUtil.isShulkerBox(cursor.getType());
+                    boolean isShulkerInShulker = false;//topType == InventoryType.SHULKER_BOX && ItemUtil.isShulkerBox(cursor.getType());
 
                     // Ignore armor slots and attempts to next shulker boxes when dropping items, let default Minecraft handle them.
                     if (event.getSlotType() != SlotType.ARMOR && !isShulkerInShulker) {
@@ -1492,7 +1491,7 @@ public class SIPlayerListener implements Listener {
                                 InventoryUtil.updateInventoryLater(player, 2);
                             }
                         }
-                    } else if (cursorAmount > SIItems.ITEM_DEFAULT_MAX) {
+                    } else if (cursorAmount > SIItems.ITEM_DEFAULT_MAX || ItemUtil.isShulkerBox(cursorType)) {
                         //player.sendMessage("Swap two items");
                         event.setCurrentItem(cursor.clone());
                         event.setCursor(clicked.clone());
@@ -1546,7 +1545,7 @@ public class SIPlayerListener implements Listener {
                                 InventoryUtil.updateInventoryLater(player, 2);
                             }
                         }
-                    } else if (cursorAmount > SIItems.ITEM_DEFAULT_MAX) {
+                    } else if (cursorAmount > SIItems.ITEM_DEFAULT_MAX || ItemUtil.isShulkerBox(cursorType)) {
                         //player.sendMessage("RC:Swap two items");
                         event.setCurrentItem(cursor.clone());
                         event.setCursor(clicked.clone());
